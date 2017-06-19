@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>6.1drawing</title>
+    <meta name="keywords" content="卡车之家" />
+	<meta name="description" content="卡车之家" />
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" /> -->
+    <meta content="telephone=no" name="format-detection" />
+    <script>
+        var phoneScale = parseInt(window.screen.width) / 640;
+        if (/Android (\d+\.\d+)/.test(navigator.userAgent)) {
+            if (parseFloat(RegExp.$1) > 2.3) {
+                document.write('<meta name="viewport" content="width=640, minimum-scale=' + phoneScale + ', maximum-scale=' + phoneScale + ', target-densitydpi=device-dpi" />');
+            } else {
+                document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi" />');
+            }
+        } else {
+            document.write('<meta name="viewport" content="width=640,user-scalable=no, minimum-scale=' + phoneScale + ', maximum-scale=' + phoneScale + '" />');
+        }
+        var shareHref = '123'
+    </script>
+    <style>
+        *{padding: 0;margin: 0;}
+        html{height: 100%;}
+        a{text-decoration: none;}
+        ul,li{list-style:none;}
+        img{vertical-align: middle;}
+        input{outline: none;border: none;color: #f68065;}
+        body{font:24px/1.5 "Microsoft YaHei",Arial;font-weight: 400;position: absolute;left: 0;top: 0;background: url("https://s.kcimg.cn/wap/images/game/20170601/bg.jpg") no-repeat; background-size: 100% 100%;width: 100%;height: 100%;}
+        /*home*/
+        .canvas-view{position: relative;z-index: 10;width: 100%;height: 100%;overflow: hidden;background: url("https://s.kcimg.cn/wap/images/game/20170601/bg.jpg") no-repeat; background-size: 100% 100%;}
+        .canvas-view{display: none;}
+        .canvas-view{position: fixed;z-index: 11;left: 0;top: 0;}
+        .draw .board{height: 740px;background: #eef6f9;}
+        .draw .bless{display: block;width: 420px;padding: 20px 40px;height: 40px;border-radius: 40px;overflow: hidden;background: #fffefd;margin: 0 auto;}
+        .draw .bless input{height: 40px;line-height: 40px;font-size: 30px;}
+        input::-webkit-input-placeholder{color: #fcd0c7;}
+        .colour{height: 108px;width: 100%;overflow: auto;margin-top: 25px;}
+        .colour ul{width: 1000%;}
+        .colour li{float: left;margin-left: 15px;width: 100px;height: 100px;border-radius: 16px;border: 4px solid transparent;}
+        .colour li.brush{border-radius: 50%;}
+        .colour li.selected{border-color: #fff;}
+        .draw .sumit-img{display: block;width: 283px;height: 102px;margin: 25px auto 0;background: url("https://s.kcimg.cn/wap/images/game/20170601/submit.png") no-repeat 50%;line-height: 102px;text-align: center;color: #fff;font-size: 40px;}
+        .app-view{position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: 1000;background: url("https://s.kcimg.cn/wap/images/game/20170601/bg.jpg") no-repeat;background-size: 100%;}
+        .colour li.rubber{background: url("https://s.kcimg.cn/wap/images/game/20170601/remove.png") no-repeat;background-size: 100%;}
+    </style>
+  </head>
+  <body>
+    <!-- 绘图 -->
+    <div class="canvas-view">
+      <!-- canvas -->
+      <form class="draw">
+          <div class="board">
+              <canvas id="canvasDiv" width="640" height="630" crossorigin="anonymous"></canvas>
+              <label for="text" class="bless">
+                  <input type="text" id="bless" name="bless" placeholder="写上您的祝福"/>
+              </label>
+          </div>
+          <div class="colour">
+              <ul class="pigment">
+                  <li class="rubber" data-color="#eff7fa"></li>
+                  <li class="brush selected" data-color="#4e2d14"></li>
+                  <li class="brush" data-color="#b51d23"></li>
+                  <li class="brush" data-color="#eaa03d"></li>
+                  <li class="brush" data-color="#fff100"></li>
+                  <li class="brush" data-color="#f6d6a0"></li>
+                  <li class="brush" data-color="#009944"></li>
+                  <li class="brush" data-color="#0036ff"></li>
+                  <li class="brush" data-color="#c01bdc"></li>
+                  <li class="brush" data-color="#f19ec2"></li>
+                  <li class="brush" data-color="#fff"></li>
+              </ul>
+          </div>
+          <input type="submit" id="saveImageInfo" class="sumit-img" value="完成" />
+      </form>
+      <!-- 弹窗 -->
+      <div class="toast">
+          <div class="toast-view">
+              <p>填色完成，确认提交？</p>
+              <div class="toast-btn">
+                  <span class="cancel">取消</span>
+                  <span class="confirm">确定</span>
+              </div>
+          </div>
+          <i class="toast-curtain"></i>
+      </div>
+    </div>
+    <!-- vue -->
+    <div id="app"></div>
+  </body>
+  <script src="https://s.kcimg.cn/public/m/js/t.min.js"></script>
+  <script src="https://s.kcimg.cn/public/wechat/wechat.accout.binding.2.0.2.min.js"></script>
+  <!-- <script src="https://s.kcimg.cn/public/wechat/wechat.accout.binding.2.0.0.min.js"></script>
+  <script>
+      window.addEventListener('load',function(){ truckhomeAccountBinding.show() })
+  </script> -->
+  <script src="./static/canvas.js"></script>
+  <script src="./static/center.js"></script>
+</html>
