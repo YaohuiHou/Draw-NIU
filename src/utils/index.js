@@ -5,8 +5,11 @@ const BASEURL = 'https://topic.360che.com/m/2017060501/'
 
 function getUid(callback){	// 获取userid
 	let uid = COOKIE.match(/AbcfN_ajaxuid=([^;$]+)/)
-	if(uid && uid[1])
-	return uid[1]
+	if(uid && uid[1]){
+		return uid[1]
+	}else{
+		return '-1'
+	}
 }
 
 function getAvatar (){	// 获取头像

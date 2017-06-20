@@ -34,15 +34,18 @@
             <div class="go-home">首页</div>
         </router-link>
         <Toast :toastView="toastView" :toastText="toastText" v-on:toastbox="toastMeg"></Toast>
+        <Share></Share>
     </div>
 </template>
 
 <script>
     import utils from "../utils"
     import Toast from '@/components/Toast'
+    import Share from '@/components/share'
     export default {
         components:{
-            Toast
+            Toast,
+            Share
         },
         data () {
             return {
@@ -67,15 +70,18 @@
             if(this.$route && this.$route.query){
                 var userdata = this.$route.query;
                 this.userid = userdata.id;
+                userdata.wxShare && (this.wxShare = userdata.wxShare);
             };
-            if(location.href.indexOf('wxShare') != '-1'){
-                this.wxShare = 1
-            }
+            // if(location.href.indexOf('wxShare') != '-1'){
+            //     this.wxShare = 1
+            // }
             // 加载
-            this.WechatShareData.link = location.href+"&wxShare=0";
             this.ajaxList (this.page);
             var me = this;
+            var time = setTimeout(function(){
                 me.shareFun();
+                clearTimeout(time)
+            },200)
         },
         methods:{
             toastMeg ( judge ){     //弹窗
@@ -99,7 +105,7 @@
             ajaxList (page){
                 var me = this;
                 var dataObj = "page="+page;
-                if(me.wxShare != 1){
+                if(me.wxShare == 1){
                     dataObj += "&userid="+me.userid
                 }
                 utils.getUserData(function(res){
@@ -129,7 +135,7 @@
             },
             shareFun (){
                 var me = this;
-                var dataObj = "url="+escape(location.href);
+                var dataObj = "url="+escape(window.location.href.split('#')[0]);
                 utils.shareHref(function(res){
                     if( res.status == 200){
                         var data = res.data;
@@ -147,16 +153,15 @@
                                 'hideMenuItems'
                             ]
                         });
-                        var me = this;
-                        var time = setTimeout(function(){
-                            me.ready();
-                            clearTimeout(time)
-                        },200)
+                        // var time = setTimeout(function(){
+                            // me.readyFun();
+                        //     clearTimeout(time)
+                        // },200)
                     }
                 },dataObj)
 
             },
-            ready(){
+            readyFun(){
                 var me = this;
                 wx.ready(function() {
                     window.wx.showAllNonBaseMenuItem()

@@ -16,15 +16,18 @@
             <li @click="score(item)" v-for="item in btns" :class="calss ? item.className : ''">{{ item.btnText }}</li>
         </ul>
         <Toast :toastView="toastView" :toastText="toastText" v-on:toastbox="toastMeg"></Toast>
+        <Share></Share>
     </div>
 </template>
 
 <script>
     import utils from "../utils"
     import Toast from '@/components/Toast'
+    import Share from '@/components/share'
     export default {
         components:{
-            Toast
+            Toast,
+            Share
         },
         data () {
             return {
@@ -50,6 +53,7 @@
             }
         },
         created(){
+            this.uid = utils.uid()
             if(this.$route && this.$route.query){
                 var userdata = this.$route.query;
                 this.infoid = userdata.id;
@@ -59,14 +63,20 @@
                 }
                 this.ajaxList(this.infoid);
             }
-            this.WechatShareData.link = location.href;
             var me = this;
+            // var time = setTimeout(function(){
+            //     me.WechatShareData.link = document.location.href;
                 me.shareFun();
+            //     clearTimeout(time)
+            // },200)
         },
         methods:{
             score (item){
-                if(!truckhomeAccountBinding.bindStatus){
-                    truckhomeAccountBinding.show();
+                if(this.uid == undefined || this.uid == '-1'){
+                    var detailUrl = document.location.href;
+                    truckhomeAccountBinding.show(function(){
+                        window.location.href = detailUrl;
+                    });
                     return;
                 }
                 var me = this;
@@ -113,7 +123,7 @@
             },
             shareFun (){
                 var me = this;
-                var dataObj = "url="+escape(location.href);
+                var dataObj = "url="+escape(location.href.split('#')[0]);
                 utils.shareHref(function(res){
                     if( res.status == 200){
                         var data = res.data;
@@ -131,16 +141,15 @@
                                 'hideMenuItems'
                             ]
                         });
-                        var me = this;
-                        var time = setTimeout(function(){
-                            me.ready();
-                            clearTimeout(time)
-                        },200)
+                        // var time = setTimeout(function(){
+                            // me.readyFun();
+                        //     clearTimeout(time)
+                        // },200)
                     }
                 },dataObj)
 
             },
-            ready(){
+            readyFun(){
                 var me = this;
                 wx.ready(function() {
                     window.wx.showAllNonBaseMenuItem()

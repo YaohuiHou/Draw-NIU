@@ -223,10 +223,13 @@
             }
         },
         created(){
-            this.uid = utils.uid()
+            var me = this;
+            try {
+                me.uid = document.cookie.match(/AbcfN_ajaxuid=([^;$]+)/)[1];
+            } catch (e) {}
             var canvasView = document.querySelector('.canvas-view');
             canvasView.style.display = 'none';
-            var me = this;
+
             var time = setTimeout(function(){
                 me.homeVisible = true;
                 clearTimeout(time)
@@ -236,8 +239,10 @@
         },
         methods:{
             clickMe (go,id){
-                if(!truckhomeAccountBinding.bindStatus){
-                    truckhomeAccountBinding.show();
+                if(this.uid == undefined || this.uid == '-1'){
+                    truckhomeAccountBinding.show(function(){
+                        window.location.reload();
+                    });
                     return;
                 }
 
